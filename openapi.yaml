@@ -1,0 +1,87 @@
+
+openapi: 3.0.0
+
+info:
+  title: Swagger ClientStore
+  version: 1.0.0
+  description: API para gestionar clientes
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /client:
+    get:
+      summary: Listar todos los clientes
+      tags:
+        - Clientes
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+
+    post:
+      summary: Crear un cliente
+      tags:
+        - Clientes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '201':
+          description: Cliente creado correctamente
+
+  /client/{clientId}:
+    put:
+      summary: Actualizar un cliente
+      tags:
+        - Clientes
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Client'
+      responses:
+        '200':
+          description: Cliente actualizado correctamente
+
+components:
+  schemas:
+    Client:
+      type: object
+      required:
+        - id
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'
+          example: Marco
+        lastName:
+          type: string
+          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$'
+          example: Perez
+        age:
+          type: integer
+          minimum: 0
+          maximum: 100
+          example: 25
